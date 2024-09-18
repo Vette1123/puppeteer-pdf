@@ -7,7 +7,7 @@ async function generatePDF() {
   const page = await browser.newPage();
 
   // Set the page size to A4
-  await page.setViewport({ width: 595, height: 1403 }); // A4 size in pixels
+  await page.setViewport({ width: 595, height: 842 }); // A4 size in pixels
 
   // Read the HTML template
   const htmlTemplate = await fs.readFile(
@@ -21,31 +21,59 @@ async function generatePDF() {
     "utf-8"
   );
 
-  // Inject the CSS into the HTML template
-  const content = htmlTemplate.replace(
-    "</head>",
-    `<style>${cssContent}</style></head>`
+  // Fetch the image and convert it to base64
+  const imageResponse = await fetch(
+    "https://i.ibb.co/wJGyPwz/Background-2.png"
   );
+  const imageBuffer = await imageResponse.arrayBuffer();
+  const base64Image = Buffer.from(imageBuffer).toString("base64");
 
-  // Add background style to every page
-  // const backgroundStyle = `
-  //   @page {
-  //     background-image: url('https://i.ibb.co/wJGyPwz/Background-2.png');
-  //     background-size: cover;
-  //     background-repeat: no-repeat;
-  //     background-position: center;
-  //   }
-  // `;
+  // Create background style with base64 image
+  const backgroundStyle = `
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      padding: 0;
+    }
+    .page-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url(data:image/png;base64,${base64Image});
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: -1;
+    }
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+  `;
+
+  // Modify the HTML structure to include background and content divs
+  const modifiedHtmlTemplate = htmlTemplate
+    .replace(
+      "<body>",
+      `<body><div class="page-background"></div><div class="page-content">`
+    )
+    .replace("</body>", `</div></body>`);
+
+  // Inject the CSS and background style into the HTML template
+  const content = modifiedHtmlTemplate.replace(
+    "</head>",
+    `<style>${cssContent}${backgroundStyle}</style></head>`
+  );
 
   // Set the content
   await page.setContent(content);
-
-  // Add the background style
-  // await page.evaluate((style) => {
-  //   const styleElement = document.createElement("style");
-  //   styleElement.textContent = style;
-  //   document.head.appendChild(styleElement);
-  // }, backgroundStyle);
 
   // Generate PDF
   await page.pdf({
@@ -60,7 +88,12 @@ async function generatePDF() {
         </span>
       </div>
     `,
-    landscape: false, // Explicitly set to false for portrait
+    margin: {
+      top: "0",
+      right: "0",
+      bottom: "0",
+      left: "0",
+    },
   });
 
   await browser.close();

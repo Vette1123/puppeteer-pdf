@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap");
+
+body {
+  font-family: "Cairo", Arial, sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  text-align: right;
+}
+
+.page-break {
+  page-break-after: always;
+}
+
+.page_content_wrapper {
+  position: relative;
+  height: 1403px;
+}
+
+.page_content_wrapper_inner_pages {
+  background: url(https://i.ibb.co/wJGyPwz/Background-2.png);
+  background-size: cover;
+  height: 1200px;
+  position: relative;
+}
+
+.page_content_wrapper_inner_pages__content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem;
+}
+
+.page_content_wrapper_inner_pages::after {
+  position: absolute;
+  content: "";
+  background-color: white;
+  width: 96%;
+  height: 96%;
+  z-index: 1;
+  top: 2%;
+  bottom: 2%;
+  right: 2%;
+  left: 2%;
+  border-radius: 10px;
+}
+
+.inner_pages_header__logo img {
+  margin-right: auto;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.inner_pages_title p {
+  color: #308a69;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.process_flow_tarmeez {
+  background-image: url(https://i.ibb.co/vDg3qfH/financing-steps.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 400px;
+  background-position: center;
+  margin-bottom: 2.5rem;
+}
+
+.terms p {
+  font-weight: bold;
+  color: #308a69;
+  margin-bottom: 2.5rem;
+}
+
+.terms_table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.terms_table tr {
+  height: 60px;
+  font-size: 18px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.terms_table tr td {
+  width: 80%;
+  background-color: #fbfbfb;
+  padding: 0.5rem;
+}
+
+.terms_table tr td:first-child {
+  width: 20%;
+  color: #54c272;
+  background-color: transparent;
+}

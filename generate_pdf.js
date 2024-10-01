@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer')
+const puppeteer = require("puppeteer");
 
 const styles = `<style>
       @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
@@ -220,4 +220,4 @@ async function generatePDF() {
   await browser.close();
 }
 
-generatePDF().catch(console.error)
+generatePDF().catch(console.error);
